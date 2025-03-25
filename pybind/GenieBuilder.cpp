@@ -285,8 +285,12 @@ std::string GenieContext::GetProfile() {
 }
 
 size_t GenieContext::TokenLength(const std::string& text) {
-    std::vector<int32_t> tokens;
-    return GenieDialog_encode(m_DialogHandle, text, tokens);
+    // std::vector<int32_t> tokens;
+    // return GenieDialog_encode(m_DialogHandle, text, tokens);
+
+    // TODO: Mock token length calculation since GenieDialog_encode
+    // is not available in QNN SDK 2.34.0.250424 and previous version.
+    return text.length();
 }
 
 PYBIND11_MODULE(geniebuilder, m) {
