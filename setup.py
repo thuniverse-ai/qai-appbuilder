@@ -288,7 +288,7 @@ def build_cpp_package():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script to build qai_appbuilder")
     parser.add_argument("--clean_only", action="store_true", help="If specified, clean the building artifacts.")
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args()
     build_clean()
     if not args.clean_only:
         build_cmake()

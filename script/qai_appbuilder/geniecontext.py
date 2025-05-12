@@ -43,7 +43,11 @@ class GenieContext:
     def TokenLength(self, text):
         return self.m_context.TokenLength(text)
 
+    def Release(self):
+        return self.m_context.Release()
+
     def __del__(self):
         if hasattr(self, "m_context") and self.m_context is not None:
+            self.m_context.Release()
             del self.m_context
             self.m_context = None

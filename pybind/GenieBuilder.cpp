@@ -181,9 +181,13 @@ GenieContext::~GenieContext() {
 #ifdef GENIE_BUILDER_DEBUG
     std::cout << "\nGenieContext::~GenieContext():\n";
 #endif
+    Release();
+}
 
-    int32_t status = 0;
-
+void GenieContext::Release() {
+#ifdef GENIE_BUILDER_DEBUG
+    std::cout << "\nGenieContext::Release():\n";
+#endif
     // Notify thread exiting.
     if(m_stream_thread) {
         m_thread_exit = true;
@@ -195,22 +199,28 @@ GenieContext::~GenieContext() {
         if (GENIE_STATUS_SUCCESS != GenieDialogConfig_free(m_ConfigHandle)) {
             std::cerr << "Failed to free the Genie Dialog config.\n";
         }
+        m_ConfigHandle = nullptr;
     }
 
     if (m_DialogHandle != nullptr) {
         if (GENIE_STATUS_SUCCESS != GenieDialog_free(m_DialogHandle)) {
             std::cerr << "Failed to free the Genie Dialog.\n";
         }
+        m_DialogHandle = nullptr;
     }
 
-    status = GenieSamplerConfig_free(m_SamplerConfigHandle);
-    if (GENIE_STATUS_SUCCESS != status) {
-      std::cerr << "Failed to free the sampler config." << std::endl;
+    if (m_SamplerConfigHandle != nullptr) {
+        if (GENIE_STATUS_SUCCESS != GenieSamplerConfig_free(m_SamplerConfigHandle)) {
+            std::cerr << "Failed to free the sampler config." << std::endl;
+        }
+        m_SamplerConfigHandle = nullptr;
     }
 
-    status = GenieProfile_free(m_ProfileHandle);
-    if (GENIE_STATUS_SUCCESS != status) {
-      std::cerr << "Failed to free the profile handle." << std::endl;
+    if (m_ProfileHandle != nullptr){
+        if (GENIE_STATUS_SUCCESS != GenieProfile_free(m_ProfileHandle)) {
+            std::cerr << "Failed to free the profile handle." << std::endl;
+        }
+        m_ProfileHandle = nullptr;
     }
 
     // Waiting thread clean.
@@ -318,5 +328,6 @@ PYBIND11_MODULE(geniebuilder, m) {
         .def("SetParams", &GenieContext::SetParams)
         .def("GetProfile", &GenieContext::GetProfile)
         .def("TokenLength", &GenieContext::TokenLength)
-        .def("Stop", &GenieContext::Stop);
+        .def("Stop", &GenieContext::Stop)
+        .def("Release", &GenieContext::Release);
 }

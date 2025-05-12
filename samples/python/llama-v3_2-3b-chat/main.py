@@ -25,6 +25,9 @@ def main():
     print("[Begin inference]")
     model.Query(prompt=prompt, callback=callback)
     print("[End inference]")
+    model.Release()
+    print("[Released memories]")
+    time.sleep(5)
 
     sys.stdout.flush()
 

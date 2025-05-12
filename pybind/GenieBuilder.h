@@ -46,6 +46,7 @@ class GenieContext {
         bool SetParams(const std::string max_length, const std::string temp, const std::string top_k, const std::string top_p);
         std::string GetProfile();
         size_t TokenLength(const std::string& text);
+        void Release();
 
     public:
         std::mutex m_stream_lock;
