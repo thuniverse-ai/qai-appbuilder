@@ -46,4 +46,4 @@ class GenieContext:
     def __del__(self):
         if hasattr(self, "m_context") and self.m_context is not None:
             del self.m_context
-            m_context = None
+            self.m_context = None

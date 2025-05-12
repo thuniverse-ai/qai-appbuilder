@@ -95,7 +95,10 @@ bool GenieContext::Query(const std::string& prompt, const Callback callback) {
 
         if (response.size() > 0) {
             //std::cout << response << std::flush;
-            callback(response);
+            bool should_stop = callback(response);
+            if(should_stop){
+                this->Stop();
+            }
         }
 
         response = "";
